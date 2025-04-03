@@ -3,6 +3,7 @@ import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import type { PageProps } from '@/types/next'
 
 export async function generateMetadata({
     params,
@@ -29,9 +30,7 @@ export async function generateMetadata({
 
 export default async function MemorialPage({
     params,
-}: {
-    params: { id: string }
-}) {
+}: PageProps) {
     const { id } = params
 
     const docRef = doc(db, 'memorials', id)
