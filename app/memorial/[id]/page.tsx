@@ -1,24 +1,21 @@
-import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
-import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+import Image from 'next/image'
 
-interface PageProps {
-    params: {
-        id: string
-    }
-}
-
-export async function generateMetadata(
-    { params }: PageProps
-): Promise<Metadata> {
+export async function generateMetadata({
+    params,
+}: {
+    params: { id: string }
+}): Promise<Metadata> {
     const docRef = doc(db, 'memorials', params.id)
     const snapshot = await getDoc(docRef)
 
     if (!snapshot.exists()) {
         return {
             title: 'Memorial Not Found',
-            description: 'This memorial page could not be found.'
+            description: 'This memorial page could not be found.',
         }
     }
 
@@ -26,11 +23,15 @@ export async function generateMetadata(
 
     return {
         title: `In Memory of ${data.deceasedName}`,
-        description: data.tribute || 'A tribute to a cherished life.'
+        description: data.tribute || 'A tribute to a cherished life.',
     }
 }
 
-export default async function MemorialPage({ params }: PageProps) {
+export default async function MemorialPage({
+    params,
+}: {
+    params: { id: string }
+}) {
     const { id } = params
 
     const docRef = doc(db, 'memorials', id)
@@ -44,7 +45,7 @@ export default async function MemorialPage({ params }: PageProps) {
         <div className="max-w-xl mx-auto px-4 py-10">
             <h1 className="text-3xl font-bold mb-4">{data.deceasedName}</h1>
             {data.photoURL && (
-                <img
+                <Image
                     src={data.photoURL}
                     alt={data.deceasedName}
                     className="rounded-lg mb-4"
