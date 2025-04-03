@@ -15,6 +15,8 @@ import { StepService } from '@/components/memorial/StepService'
 import { StepLocation } from '@/components/memorial/StepLocation'
 import { StepRSVP } from '@/components/memorial/StepRSVP'
 import { StepReferral } from '@/components/memorial/StepReferral'
+import { ProgressBar } from '@/components/ui/ProgressBar'
+
 
 export default function StartMemorial() {
   const router = useRouter()
@@ -34,7 +36,7 @@ export default function StartMemorial() {
   const [uploading, setUploading] = useState(false)
 
   const handleNext = () => setStep(prev => prev + 1)
-  const handleChange = (field: string, value: any) =>
+  const handleChange = <K extends keyof typeof form>(field: K, value: typeof form[K]) =>
     setForm(prev => ({ ...prev, [field]: value }))
 
   const handleSubmit = async () => {
@@ -61,73 +63,82 @@ export default function StartMemorial() {
       {step === 0 && <LandingStep onNext={handleNext} />}
 
       {step > 0 && (
-        <div className="text-left">
-          <h1 className="text-2xl font-semibold mb-6">Start a Memorial</h1>
-          <p className="mb-4 text-muted-foreground">Step {step} of 8</p>
+        <>
+          <ProgressBar step={step} total={8} />
+          <div className="text-left">
+            <h1 className="text-2xl font-semibold mb-6">Start a Memorial</h1>
+            <p className="mb-4 text-muted-foreground">Step {step} of 8</p>
 
-          {step === 1 && (
-            <StepOwnerName
-              value={form.ownerName}
-              onChange={val => handleChange('ownerName', val)}
-            />
-          )}
-
-          {step === 2 && (
-            <StepDeceasedName
-              value={form.deceasedName}
-              onChange={val => handleChange('deceasedName', val)}
-            />
-          )}
-
-          {step === 3 && <StepPhoto onChange={file => handleChange('photo', file)} />}
-
-          {step === 4 && (
-            <StepTribute
-              value={form.tribute}
-              onChange={val => handleChange('tribute', val)}
-            />
-          )}
-
-          {step === 5 && (
-            <StepService
-              value={form.serviceDate}
-              onChange={val => handleChange('serviceDate', val)}
-            />
-          )}
-
-          {step === 6 && (
-            <StepLocation
-              value={form.location}
-              onChange={val => handleChange('location', val)}
-            />
-          )}
-
-          {step === 7 && (
-            <StepRSVP
-              value={form.allowRSVP}
-              onChange={val => handleChange('allowRSVP', val)}
-            />
-          )}
-
-          {step === 8 && (
-            <StepReferral
-              referralSource={form.referralSource}
-              referralOther={form.referralOther}
-              onSourceChange={val => handleChange('referralSource', val)}
-              onOtherChange={val => handleChange('referralOther', val)}
-            />
-          )}
-
-          <div className="mt-6 flex justify-end gap-4">
-            {step < 8 && <Button onClick={handleNext}>Next</Button>}
-            {step === 8 && (
-              <Button onClick={handleSubmit} disabled={uploading}>
-                {uploading ? 'Creating...' : 'Create Memorial Page'}
-              </Button>
+            {step === 1 && (
+              <StepOwnerName
+                value={form.ownerName}
+                onChange={val => handleChange('ownerName', val)}
+              />
             )}
+
+            {step === 2 && (
+              <StepDeceasedName
+                value={form.deceasedName}
+                onChange={val => handleChange('deceasedName', val)}
+              />
+            )}
+
+            {step === 3 && <StepPhoto onChange={file => handleChange('photo', file)} />}
+
+            {step === 4 && (
+              <StepTribute
+                value={form.tribute}
+                onChange={val => handleChange('tribute', val)}
+              />
+            )}
+
+            {step === 5 && (
+              <StepService
+                value={form.serviceDate}
+                onChange={val => handleChange('serviceDate', val)}
+              />
+            )}
+
+            {step === 6 && (
+              <StepLocation
+                value={form.location}
+                onChange={val => handleChange('location', val)}
+              />
+            )}
+
+            {step === 7 && (
+              <StepRSVP
+                value={form.allowRSVP}
+                onChange={val => handleChange('allowRSVP', val)}
+              />
+            )}
+
+            {step === 8 && (
+              <StepReferral
+                referralSource={form.referralSource}
+                referralOther={form.referralOther}
+                onSourceChange={val => handleChange('referralSource', val)}
+                onOtherChange={val => handleChange('referralOther', val)}
+              />
+            )}
+
+            <div className="mt-6 flex justify-between gap-4">
+              <div className="flex-1">
+                {step > 1 ? (
+                  <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
+                ) : <div />}
+              </div>
+              <div>
+                {step < 8 && <Button onClick={handleNext}>Next</Button>}
+                {step === 8 && (
+                  <Button onClick={handleSubmit} disabled={uploading}>
+                    {uploading ? 'Creating...' : 'Create Memorial Page'}
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        </>)}
     </div>
   )
 }
