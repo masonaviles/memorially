@@ -4,6 +4,10 @@ import { doc, getDoc } from 'firebase/firestore'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import type { PageProps } from '@/types/next'
+import { ShareMemorial } from '@/components/memorial/ShareMemorial'
+import { GuestWall } from '@/components/memorial/GuestWall'
+
+
 
 export async function generateMetadata({
     params,
@@ -42,6 +46,8 @@ export default async function MemorialPage({
 
     return (
         <div className="max-w-xl mx-auto px-4 py-10">
+            <ShareMemorial url={`https://yourdomain.com/memorial/${id}`} />
+
             <h1 className="text-3xl font-bold mb-4">{data.deceasedName}</h1>
             {data.photoURL && (
                 <Image
@@ -72,6 +78,8 @@ export default async function MemorialPage({
                     </a>
                 </p>
             )}
+
+            <GuestWall memorialId={id} />
         </div>
     )
 }

@@ -9,9 +9,11 @@ export function StepPhoto({ }: { onChange: (file: File | null) => void }) {
 
             {/* TEMPORARY placeholder image shown instead of file input */}
             <Image
-                src="https://placehold.co/300x300?text=Photo+Coming+Soon"
+                src="https://picsum.photos/300/300"
                 alt="Temporary placeholder"
                 className="rounded-md border w-full max-w-xs"
+                width={300}
+                height={300}
             />
 
             {/* 
