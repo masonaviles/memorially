@@ -25,7 +25,7 @@ Memorially is designed to streamline the process of creating a virtual memorial.
 | UI Components| [shadcn/ui](https://ui.shadcn.com) |
 | Forms        | [React Hook Form](https://react-hook-form.com/) |
 | Backend      | [Firebase](https://firebase.google.com/) - Firestore & Storage |
-| Hosting      | [Vercel](https://vercel.com/) (recommended) |
+| Hosting      | [Vercel](https://vercel.com/) |
 | Icons        | [Lucide](https://lucide.dev/) |
 | Fonts        | [Geist](https://vercel.com/font) |
 
