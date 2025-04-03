@@ -8,8 +8,6 @@ export function StepLocation({
     onLocationChange,
     onStreamChange,
 }: {
-    value: string
-    onChange: (val: string) => void
     location: string
     stream: string
     onLocationChange: (val: string) => void

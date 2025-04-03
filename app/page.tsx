@@ -27,6 +27,7 @@ export default function StartMemorial() {
     deceasedName: '',
     photo: null as File | null,
     tribute: '',
+    stream: '',
     serviceDate: '',
     location: '',
     allowRSVP: 'rsvp_wall',
@@ -107,17 +108,31 @@ export default function StartMemorial() {
             )}
 
             {step === 5 && (
-              <StepService
-                value={form.serviceDate}
-                onChange={val => handleChange('serviceDate', val)}
-              />
+              <>
+                <StepService
+                  value={form.serviceDate}
+                  onChange={val => handleChange('serviceDate', val)}
+                />
+                <div className="flex justify-end mt-2">
+                  <button
+                    type="button"
+                    onClick={handleNext}
+                    className="text-sm text-muted-foreground underline hover:text-foreground"
+                  >
+                    Not yet
+                  </button>
+                </div>
+              </>
             )}
 
             {step === 6 && (
               <StepLocation
-                value={form.location}
-                onChange={val => handleChange('location', val)}
+                location={form.location}
+                stream={form.stream}
+                onLocationChange={val => handleChange('location', val)}
+                onStreamChange={val => handleChange('stream', val)}
               />
+
             )}
 
             {step === 7 && (
