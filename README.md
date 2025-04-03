@@ -34,12 +34,6 @@ Memorially is designed to streamline the process of creating a virtual memorial.
 ## ⚙️ Features
 
 - 🧾 Step-by-step memorial creation flow
-- 📷 (Planned) Photo uploads via Firebase Storage
-- 💬 Tribute submission with character count and scroll
-- 📅 Optional service date and stream link
-- 📍 Physical or virtual location fields
-- 💌 RSVP and tribute wall options
-- 📈 Dynamic progress bar
 - 💡 Smooth and responsive design
 
 ---
