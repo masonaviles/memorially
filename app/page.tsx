@@ -1,4 +1,3 @@
-// app/start/page.tsx
 'use client'
 
 import { useState } from 'react'
@@ -6,9 +5,16 @@ import { useRouter } from 'next/navigation'
 import { db, storage } from '@/lib/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
+import { LandingStep } from '@/components/memorial/LandingStep'
+import { StepOwnerName } from '@/components/memorial/StepOwnerName'
+import { StepDeceasedName } from '@/components/memorial/StepDeceasedName'
+import { StepPhoto } from '@/components/memorial/StepPhoto'
+import { StepTribute } from '@/components/memorial/StepTribute'
+import { StepService } from '@/components/memorial/StepService'
+import { StepLocation } from '@/components/memorial/StepLocation'
+import { StepRSVP } from '@/components/memorial/StepRSVP'
+import { StepReferral } from '@/components/memorial/StepReferral'
 
 export default function StartMemorial() {
   const router = useRouter()
@@ -51,98 +57,65 @@ export default function StartMemorial() {
   }
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-10 text-center">
-      {step === 0 ? (
-        <>
-          <h1 className="text-3xl font-bold mb-6">Memorially</h1>
-          <Button onClick={handleNext}>Start a Memorial</Button>
-        </>
-      ) : (
+    <div className="max-w-xl mx-auto px-4 py-10">
+      {step === 0 && <LandingStep onNext={handleNext} />}
+
+      {step > 0 && (
         <div className="text-left">
           <h1 className="text-2xl font-semibold mb-6">Start a Memorial</h1>
           <p className="mb-4 text-muted-foreground">Step {step} of 8</p>
 
           {step === 1 && (
-            <Input
-              placeholder="Your name"
+            <StepOwnerName
               value={form.ownerName}
-              onChange={e => handleChange('ownerName', e.target.value)}
+              onChange={val => handleChange('ownerName', val)}
             />
           )}
 
           {step === 2 && (
-            <Input
-              placeholder="Their full name"
+            <StepDeceasedName
               value={form.deceasedName}
-              onChange={e => handleChange('deceasedName', e.target.value)}
+              onChange={val => handleChange('deceasedName', val)}
             />
           )}
 
-          {step === 3 && (
-            <Input type="file" onChange={e => handleChange('photo', e.target.files?.[0] || null)} />
-          )}
+          {step === 3 && <StepPhoto onChange={file => handleChange('photo', file)} />}
 
           {step === 4 && (
-            <Textarea
-              placeholder="Write a short tribute..."
+            <StepTribute
               value={form.tribute}
-              maxLength={300}
-              onChange={e => handleChange('tribute', e.target.value)}
+              onChange={val => handleChange('tribute', val)}
             />
           )}
 
           {step === 5 && (
-            <Input
-              type="datetime-local"
+            <StepService
               value={form.serviceDate}
-              onChange={e => handleChange('serviceDate', e.target.value)}
+              onChange={val => handleChange('serviceDate', val)}
             />
           )}
 
           {step === 6 && (
-            <Input
-              placeholder="Location or stream link"
+            <StepLocation
               value={form.location}
-              onChange={e => handleChange('location', e.target.value)}
+              onChange={val => handleChange('location', val)}
             />
           )}
 
           {step === 7 && (
-            <select
-              className="w-full border p-2 rounded-md"
+            <StepRSVP
               value={form.allowRSVP}
-              onChange={e => handleChange('allowRSVP', e.target.value)}
-            >
-              <option value="rsvp_wall">RSVP + Tribute Wall</option>
-              <option value="wall_only">Tribute Wall Only</option>
-              <option value="none">No Guest Interaction</option>
-            </select>
+              onChange={val => handleChange('allowRSVP', val)}
+            />
           )}
 
           {step === 8 && (
-            <div className="space-y-4">
-              <select
-                className="w-full border p-2 rounded-md"
-                value={form.referralSource}
-                onChange={e => handleChange('referralSource', e.target.value)}
-              >
-                <option value="">How did you hear about us?</option>
-                <option value="google">Google search</option>
-                <option value="friend">A friend or family</option>
-                <option value="funeral_home">Funeral home</option>
-                <option value="hospice">Hospice or care provider</option>
-                <option value="social">Social media</option>
-                <option value="other">Other</option>
-              </select>
-
-              {form.referralSource === 'other' && (
-                <Input
-                  placeholder="Please specify..."
-                  value={form.referralOther}
-                  onChange={e => handleChange('referralOther', e.target.value)}
-                />
-              )}
-            </div>
+            <StepReferral
+              referralSource={form.referralSource}
+              referralOther={form.referralOther}
+              onSourceChange={val => handleChange('referralSource', val)}
+              onOtherChange={val => handleChange('referralOther', val)}
+            />
           )}
 
           <div className="mt-6 flex justify-end gap-4">
