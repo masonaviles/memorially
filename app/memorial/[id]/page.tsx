@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata } from 'next'
 import { db } from '@/lib/firebase'
 import { doc, getDoc } from 'firebase/firestore'
 import { notFound } from 'next/navigation'
@@ -6,6 +6,27 @@ import { notFound } from 'next/navigation'
 interface PageProps {
     params: {
         id: string
+    }
+}
+
+export async function generateMetadata(
+    { params }: PageProps
+): Promise<Metadata> {
+    const docRef = doc(db, 'memorials', params.id)
+    const snapshot = await getDoc(docRef)
+
+    if (!snapshot.exists()) {
+        return {
+            title: 'Memorial Not Found',
+            description: 'This memorial page could not be found.'
+        }
+    }
+
+    const data = snapshot.data()
+
+    return {
+        title: `In Memory of ${data.deceasedName}`,
+        description: data.tribute || 'A tribute to a cherished life.'
     }
 }
 
