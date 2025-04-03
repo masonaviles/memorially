@@ -15,12 +15,13 @@ export function StepReferral({
 }) {
     return (
         <div className="space-y-4">
+            <h2 className="text-lg font-medium mb-2">How did you hear about Memorially?</h2>
             <select
                 className="w-full border p-2 rounded-md"
                 value={referralSource}
                 onChange={e => onSourceChange(e.target.value)}
             >
-                <option value="">How did you hear about us?</option>
+                <option value="">Select an option</option>
                 <option value="google">Google search</option>
                 <option value="friend">A friend or family</option>
                 <option value="funeral_home">Funeral home</option>

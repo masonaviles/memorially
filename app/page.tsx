@@ -59,16 +59,30 @@ export default function StartMemorial() {
   }
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-10">
+    <div className="max-w-xl mx-auto px-4 py-4">
       {step === 0 && <LandingStep onNext={handleNext} />}
 
       {step > 0 && (
         <>
-          <ProgressBar step={step} total={8} />
-          <div className="text-left">
-            <h1 className="text-2xl font-semibold mb-6">Start a Memorial</h1>
-            <p className="mb-4 text-muted-foreground">Step {step} of 8</p>
 
+          <div className="relative mb-4">
+            {step > 1 && (
+              <button
+                onClick={() => setStep(step - 1)}
+                className="absolute left-0 top-0 -translate-y-0 text-2xl text-muted-foreground hover:text-foreground"
+                aria-label="Go back"
+              >
+                ←
+              </button>
+            )}
+            <ProgressBar step={step} total={8} />
+          </div>
+          <div className="text-left py-10">
+            <h1
+              className={`text-2xl font-semibold mb-6 transition-opacity duration-500 ${step === 1 ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}
+            >
+              Start a Memorial
+            </h1>
             {step === 1 && (
               <StepOwnerName
                 value={form.ownerName}
@@ -122,16 +136,11 @@ export default function StartMemorial() {
               />
             )}
 
-            <div className="mt-6 flex justify-between gap-4">
-              <div className="flex-1">
-                {step > 1 ? (
-                  <Button variant="outline" onClick={() => setStep(step - 1)}>Back</Button>
-                ) : <div />}
-              </div>
-              <div>
-                {step < 8 && <Button onClick={handleNext}>Next</Button>}
+            <div className="fixed bottom-0 left-0 w-full px-4 py-6 bg-white border-t z-10">
+              <div className="max-w-xl mx-auto">
+                {step < 8 && <Button onClick={handleNext} className="w-full">Next</Button>}
                 {step === 8 && (
-                  <Button onClick={handleSubmit} disabled={uploading}>
+                  <Button onClick={handleSubmit} disabled={uploading} className="w-full">
                     {uploading ? 'Creating...' : 'Create Memorial Page'}
                   </Button>
                 )}
